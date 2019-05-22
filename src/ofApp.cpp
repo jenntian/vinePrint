@@ -4,6 +4,7 @@
 void ofApp::setup(){
 
 
+	ofSetCurveResolution(1024);
 
 
 }
@@ -17,24 +18,105 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	
+	// START print to pdf
+	if (oneShot) {
+		ofBeginSaveScreenAsPDF("screenshot-" + ofGetTimestampString() + ".pdf", false);
+	}
 
-	ofBackground(0);
 
-	// draw lines
-	ofSetLineWidth(5.0);
-	ofSetColor(255, 0, 0);
+	ofBackground(240,220,220);
 
-	for (int i = 0; i < 3; i ++) {
-		ofSetLineWidth(5.0+i*2);
-		ofLine(ofVec3f(100+i*50, 0), ofVec3f(100+i*50, ofGetHeight()));
+	
+	vine(300,150);
 
+	// END print to pdf
+	if (oneShot) {
+		ofEndSaveScreenAsPDF();
+		oneShot = false;
 	}
 
 }
 
+void ofApp::vine(int x, int y) {
+
+	// draw line
+	ofSetColor(0);
+	ofSetLineWidth(7.0);
+	ofLine(ofVec3f(x, 0), ofVec3f(x, ofGetHeight()));
+
+	int dir = 1;
+	//draw leafs
+	ofSetLineWidth(5.0);
+
+	for (int i = 0; i < 12; i++) {
+		leaf(x, y+i*50, dir);
+		dir = -dir;
+	}
+
+	
+}
+
+
+void ofApp::leaf(int x, int y, int dir) {
+
+	//ofDrawEllipse(x-dir*20, y, 60, 60);
+
+	ofPath line;
+	line.setFilled(false);
+	line.setStrokeWidth(4);
+	line.setStrokeColor(0);
+	line.setFillColor(ofColor(0, 0, 255));
+
+	// line 1 to tip
+	ofPoint p1 = ofVec3f(x, y, 0);
+	ofPoint p2 = ofVec3f(x, y, 0); //curve x,y
+	ofPoint p3 = ofVec3f(x+80*dir, y-70, 0); //curve x,y
+	ofPoint p4 = ofVec3f(x+150*dir, y-60, 0);
+
+	//line.addVertex(x, y, 0);
+	line.curveTo(p1);
+	line.curveTo(p2);
+	line.curveTo(p3);
+	line.curveTo(p4);
+	
+	// line 2 to beginning
+	 p1 = ofVec3f(x+120*dir, y-20, 0);
+	 p2 = ofVec3f(x + 30*dir, y, 0); //curve x,y
+	 p3 = ofVec3f(x, y, 0); //curve x,y
+	 p4 = ofVec3f(ofGetMouseX(),ofGetMouseY(), 0);
+
+	 line.curveTo(p1);
+	 line.curveTo(p2);
+	 line.curveTo(p3);
+	 line.curveTo(p3);
+
+	// line.curveTo(p4);
+	 line.close();
+
+	 ofSetColor(255, 0, 0);
+	 line.draw();
+
+	/*ofSetColor(0, 255,200);
+	int sizeE = 15;
+	ofDrawEllipse(p1, sizeE, sizeE);
+	ofDrawEllipse(p2, sizeE, sizeE);
+	ofDrawEllipse(p3, sizeE, sizeE);
+	ofDrawEllipse(p4, sizeE, sizeE);*/
+
+	
+
+
+
+}
+
+
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	
+	if (key == 's') {
+		oneShot = true;
+	}
 }
 
 //--------------------------------------------------------------
