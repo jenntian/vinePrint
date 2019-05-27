@@ -4,7 +4,7 @@
 void ofApp::setup(){
 
 
-	ofSetCurveResolution(1024);
+	//ofSetCurveResolution(1024);
 
 
 }
@@ -25,7 +25,7 @@ void ofApp::draw(){
 	}
 
 
-	ofBackground(240,220,220);
+	ofBackground(220,220,240);
 
 	
 	vine(300,150);
@@ -50,7 +50,7 @@ void ofApp::vine(int x, int y) {
 	ofSetLineWidth(5.0);
 
 	for (int i = 0; i < 12; i++) {
-		leaf(x, y+i*50, dir);
+		leaf(x+4*dir, y+i*50, dir);
 		dir = -dir;
 	}
 
@@ -70,7 +70,7 @@ void ofApp::leaf(int x, int y, int dir) {
 
 	// line 1 to tip
 	ofPoint p1 = ofVec3f(x, y, 0);
-	ofPoint p2 = ofVec3f(x, y, 0); //curve x,y
+	ofPoint p2 = ofVec3f(x-5*dir,y, 0); //curve x,y // seems fine in print... 
 	ofPoint p3 = ofVec3f(x+80*dir, y-70, 0); //curve x,y
 	ofPoint p4 = ofVec3f(x+150*dir, y-60, 0);
 
@@ -84,12 +84,12 @@ void ofApp::leaf(int x, int y, int dir) {
 	 p1 = ofVec3f(x+120*dir, y-20, 0);
 	 p2 = ofVec3f(x + 30*dir, y, 0); //curve x,y
 	 p3 = ofVec3f(x, y, 0); //curve x,y
-	 p4 = ofVec3f(ofGetMouseX(),ofGetMouseY(), 0);
+	 p4 = ofVec3f(x+80*dir,y-80, 0); // come down from x,y
 
 	 line.curveTo(p1);
 	 line.curveTo(p2);
 	 line.curveTo(p3);
-	 line.curveTo(p3);
+	 line.curveTo(p4);
 
 	// line.curveTo(p4);
 	 line.close();
@@ -97,11 +97,11 @@ void ofApp::leaf(int x, int y, int dir) {
 	 ofSetColor(255, 0, 0);
 	 line.draw();
 
-	/*ofSetColor(0, 255,200);
-	int sizeE = 15;
-	ofDrawEllipse(p1, sizeE, sizeE);
-	ofDrawEllipse(p2, sizeE, sizeE);
-	ofDrawEllipse(p3, sizeE, sizeE);
+	/*ofSetColor(255, 127,0);
+	int sizeE = 5;
+	//ofDrawEllipse(p1, sizeE, sizeE);
+	//ofDrawEllipse(p2, sizeE, sizeE);
+	//ofDrawEllipse(p3, sizeE, sizeE);
 	ofDrawEllipse(p4, sizeE, sizeE);*/
 
 	
